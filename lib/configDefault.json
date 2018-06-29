@@ -1,18 +1,18 @@
-{	
+﻿{	
 	"gameVersion": "4.2.5",
 	"enabled": true,
 	"markenabled": true,
 	"messager": true,
 	"alerts": true,
-	"Item_ID": 98260,
+	"Item_ID": 369,
 	"allowAutoEntryRemoval": true,
 	"Monster_ID": {
-		"4_5011": "Tempest Kanash",
-		"38_35": "Nyxarras",
-		"57_33": "Betsael",
-		"51_7011": "Linyphi",
-		"10_99": "Divine Reaver",
-		"52_9050": "Yunaras Snaggletooth",
+		"4_5011": "暴風喀納希",
+		"38_35": "潰斯格連",
+		"57_33": "卡恰斯坦",
+		"51_7011": "拉其奴亞",
+		"10_99": "莎夏拉克",
+		"52_9050": "史內格鬥司",
 		"1023_8888888": "Blue Box"
 	},
 	"newEntries": {
@@ -30,4 +30,5 @@
 		
 	},
 	"deleteEntries": ["1023_99999992","1023_99999991","770_2002","970_2002","777_77709","507_1204"]
+
 }
