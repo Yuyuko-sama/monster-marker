@@ -1,0 +1,19 @@
+{
+	"gameVersion": "4.2.5",
+	"enabled": true,
+	"markenabled": true,
+	"messager": true,
+	"alerts": true,
+	"Item_ID": 369,
+	"allowAutoEntryRemoval": true,
+	"Monster_ID": {
+		"4_5011": "暴風喀納希",
+		"38_35": "潰斯格連",
+		"57_33": "卡恰斯坦",
+		"51_7011": "拉其奴亞",
+		"10_99": "莎夏拉克",
+		"52_9050": "史內格鬥司",
+		"1023_8888888": "Blue Box"
+	},
+	"entriesVersion": "4.2.5"
+}

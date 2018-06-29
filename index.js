@@ -7,7 +7,8 @@ To discover more ids, hook S_SPAWN_NPC and check huntingzoneid and templateId. O
 
 Configs are in config.json. If you do not have it, it will be auto generated on your first login
 */
-	
+'use strict'
+
 const Command = require('command'),
 	  defaultConfig = require('./lib/configDefault.json'),
 	  path = require('path'),
@@ -25,7 +26,8 @@ module.exports = function markmob(dispatch) {
 		messager,
 		alerts,
 		Item_ID,
-		Monster_ID
+		Monster_ID,
+		currentChannel = 0
 	
 	try{
 		config = JSON.parse(fs.readFileSync(path.join(__dirname,'config.json'), 'utf8'))
@@ -69,10 +71,7 @@ module.exports = function markmob(dispatch) {
 		console.log('[Monster Marker] New config file generated. Settings in config.json.')
 	}	
 
-	
 	const command = Command(dispatch)
-
-	
 
 	
 ///////Commands
@@ -120,9 +119,9 @@ module.exports = function markmob(dispatch) {
 				mobid.push(event.gameId.low)
 			}
 			
-			if(alerts) notice('Found '+ Monster_ID[`${event.huntingZoneId}_${event.templateId}`])
-			
-			if(messager) command.message('(MonsterMarker)Found '+ Monster_ID[`${event.huntingZoneId}_${event.templateId}`])
+			if(alerts)notice(Monster_ID[`${event.huntingZoneId}_${event.templateId}`])
+				
+			if(messager) command.message('『发现BOSS』: '+ Monster_ID[`${event.huntingZoneId}_${event.templateId}`])
 		}
 	}) 
 
@@ -138,8 +137,12 @@ module.exports = function markmob(dispatch) {
 		active = event.zone < 9000  //Check if it is a dungeon instance, since event mobs can come from dungeon
 	})
 	
+	dispatch.hook('S_CURRENT_CHANNEL', 1, (event) => {
+        currentChannel = event.channel;     
+    });
 	
 ////////Functions
+
 	function markthis(locs,idRef) {
 		dispatch.toClient('S_SPAWN_DROPITEM', 6, {
 			gameId: {low:idRef,high:0,unsigned:true},
@@ -163,14 +166,22 @@ module.exports = function markmob(dispatch) {
 	}
 	
 	function notice(msg) {
-		dispatch.toClient('S_DUNGEON_EVENT_MESSAGE', 1, {
-            unk1: 2,
-            unk2: 0,
-            unk3: 0,
-            message: msg
+		dispatch.toClient('S_DUNGEON_EVENT_MESSAGE', 2, {
+            type: 42,// 42 Blue Shiny Text, 31 Normal Text
+            chat: 0,
+            channel: 27,
+            message: '发现BOSS: '+msg
         })
-    }
 	
+		dispatch.toClient('S_CHAT', 2, {
+			channel:7,
+			col:new Array("#FFCC00","#3333FF","#FFCC00","#FF0000","#FFCC00","#CC33FF"),
+			cl:0,
+
+			message:'<font color="#00ffff">『发现BOSS』: </font>'+`<font color="#ffff00">${msg}</font>`+'<font color="#00ffff">  『分流』: </font>'+`<font color="#ffff00">${currentChannel}</font>`+'<font color="#ffff00">X</font>'+'<font color="#00ffff">  『时间』: </font>'+`<font color="#ffff00">${Date().slice(16,24)}</font>`
+			})
+    }
+
 	function save(data,args) {
 		if(!Array.isArray(args)) args = [args] //Find a way around this later -.-
 		
